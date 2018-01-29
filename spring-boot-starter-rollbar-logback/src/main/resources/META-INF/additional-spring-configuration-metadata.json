@@ -1,0 +1,16 @@
+{
+  "groups": [
+    {
+      "name": "rollbar-logging",
+      "type": "ch.olmero.rollbar.logback.LogbackLoggingApplicationListener"
+    }
+  ],
+  "properties": [
+    {
+      "name": "com.rollbar.logging.level",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Log levels severity mapping. For instance, 'com.rollbar.logging.level.org.springframework=DEBUG'",
+      "sourceType": "ch.olmero.rollbar.logback.LogbackLoggingApplicationListener"
+    }
+  ]
+}
