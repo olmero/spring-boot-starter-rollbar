@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ch.olmero</groupId>
+	<artifactId>spring-boot-starter-rollbar-project</artifactId>
+	<version>${revision}</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<revision>1.0.0.RELEASE</revision>
+	</properties>
+
+	<modules>
+		<module>spring-boot-starter-rollbar</module>
+		<module>spring-boot-starter-rollbar-logback</module>
+		<module>spring-boot-starter-rollbar-parent</module>
+	</modules>
+</project>

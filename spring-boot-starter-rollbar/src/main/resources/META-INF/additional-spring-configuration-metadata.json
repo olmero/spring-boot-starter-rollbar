@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "com.rollbar.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Set this to false to disable the Rollbar Notification Service."
+    },
+    {
+      "name": "com.rollbar.access-token",
+      "type": "java.lang.String",
+      "description": "The access token to use."
+    },
+    {
+      "name": "com.rollbar.environment",
+      "type": "java.lang.String",
+      "description": "Represents the current environment (e.g.: production, debug, test)."
+    },
+    {
+      "name": "com.rollbar.code-version",
+      "type": "java.lang.String",
+      "description": "The currently running version of the code."
+    }
+  ]
+}
