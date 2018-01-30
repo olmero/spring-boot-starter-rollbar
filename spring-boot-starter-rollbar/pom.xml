@@ -5,10 +5,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>spring-boot-starter-rollbar-parent</artifactId>
+		<artifactId>spring-boot-starter-rollbar-project</artifactId>
 		<groupId>ch.olmero</groupId>
 		<version>${revision}</version>
-		<relativePath>../spring-boot-starter-rollbar-parent</relativePath>
+		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>spring-boot-starter-rollbar</artifactId>
