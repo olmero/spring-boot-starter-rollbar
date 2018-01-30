@@ -20,8 +20,12 @@
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<lombok.version>1.16.20</lombok.version>
-		<revision>1.0.0.RELEASE</revision>
+		<revision>1.0.0.SNAPSHOT</revision>
 	</properties>
+
+	<scm>
+		<developerConnection>scm:git:ssh://git@git.olmero.ch:olmero/spring-boot-starter-rollbar.git</developerConnection>
+	</scm>
 
 	<modules>
 		<module>spring-boot-starter-rollbar</module>
@@ -77,4 +81,14 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+			</plugin>
+		</plugins>
+	</build>
 </project>
