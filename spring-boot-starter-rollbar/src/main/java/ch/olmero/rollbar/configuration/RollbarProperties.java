@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.info.GitProperties;
 
@@ -35,7 +34,7 @@ public class RollbarProperties {
 	private String codeVersion;
 
 	/**
-	 * If {@code codeVersion} is set this value will be returned otherwise when {@GitProperties} are defined,
+	 * If {@code codeVersion} is set this value will be returned otherwise when {@code GitProperties} are defined,
 	 * the commitId of such will be returned. otherwise {@code null};
 	 *
 	 * @return the code version
