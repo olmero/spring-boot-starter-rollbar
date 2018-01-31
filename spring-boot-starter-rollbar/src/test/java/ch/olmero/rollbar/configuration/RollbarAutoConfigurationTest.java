@@ -9,7 +9,6 @@ import com.rollbar.notifier.config.ConfigProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -25,11 +24,9 @@ public class RollbarAutoConfigurationTest {
 		EnvironmentTestUtils.addEnvironment(this.context,
 			"com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
 			"com.rollbar.environment=test",
-			"com.rollbar.codeVersion=23218add"
-			//,"spring.info.git.location=gna.properties"
-		);
+			"com.rollbar.codeVersion=23218add");
 
-		this.context.register(ProjectInfoAutoConfiguration.class, RollbarAutoConfiguration.class);
+		this.context.register(RollbarAutoConfiguration.class);
 		this.context.refresh();
 	}
 
