@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>spring-boot-starter-rollbar-project</artifactId>
 		<groupId>ch.olmero</groupId>
-		<version>1.1.1.SNAPSHOT</version>
+		<version>1.1.1.RELEASE</version>
 		<relativePath>../</relativePath>
 	</parent>
 
 	<artifactId>spring-boot-starter-rollbar-logback</artifactId>
-	<version>1.1.1.SNAPSHOT</version>
+	<version>1.1.1.RELEASE</version>
 
 	<dependencies>
 		<!-- Compile -->
