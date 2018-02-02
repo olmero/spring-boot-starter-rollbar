@@ -18,7 +18,7 @@
     {
       "name": "com.rollbar.code-version",
       "type": "java.lang.String",
-      "description": "The currently running version of the code."
+      "description": "The currently running version of the code. If unset, the commit.id is taken from the git.properties if found."
     }
   ]
 }
