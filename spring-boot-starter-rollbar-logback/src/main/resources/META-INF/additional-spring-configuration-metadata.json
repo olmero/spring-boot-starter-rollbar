@@ -12,5 +12,52 @@
       "description": "Log levels severity mapping. For instance, 'com.rollbar.logging.level.org.springframework=DEBUG'",
       "sourceType": "ch.olmero.rollbar.logback.LogbackLoggingApplicationListener"
     }
+  ],
+  "hints": [
+    {
+      "name" : "com.rollbar.logging.level.keys",
+      "values": [
+        {
+          "value": "root",
+          "description": "Root logger used to assign the default logging level."
+        }
+      ],
+      "providers": [
+        {
+          "name" : "logger-name"
+        }
+      ]
+    },
+    {
+      "name": "logging.level.values",
+      "values": [
+        {
+          "value": "trace"
+        },
+        {
+          "value": "debug"
+        },
+        {
+          "value": "info"
+        },
+        {
+          "value": "warn"
+        },
+        {
+          "value": "error"
+        },
+        {
+          "value": "fatal"
+        },
+        {
+          "value": "off"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
   ]
 }
