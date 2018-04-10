@@ -11,12 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingApplicationListener;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.core.ResolvableType;
 
@@ -45,7 +46,7 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 
 	@Override
 	public boolean supportsEventType(ResolvableType resolvableType) {
-		return ApplicationReadyEvent.class.isAssignableFrom(resolvableType.getRawClass());
+		return ContextRefreshedEvent.class.isAssignableFrom(resolvableType.getRawClass());
 	}
 
 	@Override
@@ -56,8 +57,8 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
-		if (event instanceof ApplicationReadyEvent) {
-			onApplicationReadyEvent((ApplicationReadyEvent)event);
+		if (event instanceof ContextRefreshedEvent) {
+			onApplicationPreparedEvent((ContextRefreshedEvent)event);
 		}
 	}
 
@@ -67,7 +68,7 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 		return LoggingApplicationListener.DEFAULT_ORDER + 1;
 	}
 
-	private void onApplicationReadyEvent(ApplicationReadyEvent event) {
+	private void onApplicationPreparedEvent(ContextRefreshedEvent event) {
 		Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 		// default is com.rollbar.logging.level.root=ERROR

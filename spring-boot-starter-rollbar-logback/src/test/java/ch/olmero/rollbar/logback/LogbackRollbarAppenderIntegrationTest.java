@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoPostProcessor;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.util.EnvironmentTestUtils;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +52,7 @@ public class LogbackRollbarAppenderIntegrationTest {
 		context.register(RollbarAutoConfiguration.class, MockNotificationServiceConfiguration.class);
 		context.refresh();
 
-		this.initializer.onApplicationEvent(new ApplicationReadyEvent(new SpringApplication(), null, context));
+		this.initializer.onApplicationEvent(new ContextRefreshedEvent(context));
 
 		RollbarNotificationService rollbarNotificationService = this.context.getBean(RollbarNotificationService.class);
 
