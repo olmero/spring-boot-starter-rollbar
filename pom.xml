@@ -11,7 +11,7 @@
 
 	<groupId>ch.olmero</groupId>
 	<artifactId>spring-boot-starter-rollbar-project</artifactId>
-	<version>2.0.1.BUILD-SNAPSHOT</version>
+	<version>2.0.1.RELEASE</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -22,7 +22,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@git.olmero.ch:olmero/spring-boot-starter-rollbar.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>v2.0.1.RELEASE</tag>
 	</scm>
 
 	<distributionManagement>
@@ -43,12 +43,12 @@
 			<dependency>
 				<groupId>ch.olmero</groupId>
 				<artifactId>spring-boot-starter-rollbar</artifactId>
-				<version>2.0.1.BUILD-SNAPSHOT</version>
+				<version>2.0.1.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.olmero</groupId>
 				<artifactId>spring-boot-starter-rollbar-logback</artifactId>
-				<version>2.0.1.BUILD-SNAPSHOT</version>
+				<version>2.0.1.RELEASE</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
