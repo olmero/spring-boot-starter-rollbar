@@ -10,10 +10,10 @@ import ch.qos.logback.core.spi.FilterReply;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
+import org.springframework.boot.context.logging.LoggingApplicationListener;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggingApplicationListener;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
@@ -21,10 +21,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.core.ResolvableType;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -72,11 +69,13 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 		Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 		// default is com.rollbar.logging.level.root=ERROR
-		Map<String, Object> levels = new RelaxedPropertyResolver(event.getApplicationContext().getEnvironment())
-			.getSubProperties("com.rollbar.logging.level.");
+		Binder binder = Binder.get(event.getApplicationContext().getEnvironment());
+
+		Map<String, String> levels = binder.bind("com.rollbar.logging.level",
+				Bindable.mapOf(String.class, String.class)).orElseGet(Collections::emptyMap);
 
 		Map<String, Level> logLevels = levels.entrySet().stream()
-			.map(e -> new HashMap.SimpleEntry<>(e.getKey(), coerceLogLevel(e.getValue().toString())))
+			.map(e -> new HashMap.SimpleEntry<>(e.getKey(), coerceLogLevel(e.getValue())))
 			.collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
 
 		ClassExclusionEvaluator classExclusionEvaluator = new ClassExclusionEvaluator(logLevels);

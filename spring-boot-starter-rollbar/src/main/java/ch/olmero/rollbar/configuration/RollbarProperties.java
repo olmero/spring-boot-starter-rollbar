@@ -4,11 +4,14 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.info.GitProperties;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
+
+@Validated
 @Data
 @ConfigurationProperties(prefix = "com.rollbar")
 public class RollbarProperties {

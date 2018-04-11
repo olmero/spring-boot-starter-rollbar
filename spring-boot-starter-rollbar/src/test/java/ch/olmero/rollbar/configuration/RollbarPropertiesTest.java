@@ -3,16 +3,16 @@ package ch.olmero.rollbar.configuration;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Throwables;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.validation.BindException;
+import org.springframework.boot.context.properties.bind.validation.BindValidationException;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.annotation.*;
+import org.springframework.validation.FieldError;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,12 +23,18 @@ public class RollbarPropertiesTest {
 			Assertions.fail("Expected BindException to be thrown");
 		} catch (Exception e) {
 			Throwable rootCause = Throwables.getRootCause(e);
-			assertThat(rootCause).isInstanceOf(BindException.class);
+			assertThat(rootCause).isInstanceOf(BindValidationException.class);
 
-			BindException bindException = (BindException)rootCause;
+			BindValidationException bindException = (BindValidationException)rootCause;
 
-			assertThat(bindException.getBindingResult().getFieldErrors()).extracting("field")
-				.containsOnly("accessToken", "environment");
+			List<FieldError> fieldErrors = bindException.getValidationErrors().getAllErrors().stream()
+					.map(o -> (FieldError) o)
+					.collect(Collectors.toList());
+
+			assertThat(fieldErrors)
+					.hasSize(2)
+					.extracting("field")
+					.containsOnly("accessToken", "environment");
 		}
 	}
 
@@ -49,7 +55,8 @@ public class RollbarPropertiesTest {
 	private AnnotationConfigApplicationContext createContext(String... pairs) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
-		EnvironmentTestUtils.addEnvironment(context, pairs);
+
+		TestPropertyValues.of(pairs).applyTo(context);
 
 		context.register(RollbarPropertiesConfiguration.class);
 		context.refresh();
