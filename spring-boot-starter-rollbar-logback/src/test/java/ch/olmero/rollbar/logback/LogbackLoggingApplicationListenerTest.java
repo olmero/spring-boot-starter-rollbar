@@ -50,12 +50,6 @@ public class LogbackLoggingApplicationListenerTest {
 	public void rest() {
 		((Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).detachAppender(LogbackRollbarAppender.NAME);
 	}
-//
-//	@Test
-//	public void supportsEventType() {
-//		assertThat(this.listener.supportsEventType(ResolvableType.forType(ApplicationReadyEvent.class))).isTrue();
-//		assertThat(this.listener.supportsEventType(ResolvableType.forType(ApplicationPreparedEvent.class))).isFalse();
-//	}
 
 	@Test
 	public void supportsSourceType() {

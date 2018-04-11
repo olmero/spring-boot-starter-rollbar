@@ -3,15 +3,10 @@ package ch.olmero.rollbar.logback;
 import ch.olmero.rollbar.RollbarNotificationService;
 import ch.olmero.rollbar.configuration.RollbarAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.junit.*;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoPostProcessor;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -44,10 +39,9 @@ public class LogbackRollbarAppenderIntegrationTest {
 
 	@Test
 	public void overrideRootLevel() {
-		EnvironmentTestUtils.addEnvironment(this.context,
-			"com.rollbar.logging.level.root=INFO",
-			"com.rollbar.access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-			"com.rollbar.environment=test");
+		TestPropertyValues.of("com.rollbar.logging.level.root=INFO",
+				"com.rollbar.access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"com.rollbar.environment=test").applyTo(this.context);
 
 		context.register(RollbarAutoConfiguration.class, MockNotificationServiceConfiguration.class);
 		context.refresh();

@@ -3,13 +3,9 @@ package ch.olmero.rollbar.configuration;
 import ch.olmero.rollbar.DefaultRollbarNotificationService;
 import ch.olmero.rollbar.RollbarNotificationService;
 import com.rollbar.notifier.Rollbar;
-import com.rollbar.notifier.config.Config;
-import com.rollbar.notifier.config.ConfigBuilder;
-import com.rollbar.notifier.config.ConfigProvider;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.boot.test.util.EnvironmentTestUtils;
+import com.rollbar.notifier.config.*;
+import org.junit.*;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,10 +17,9 @@ public class RollbarAutoConfigurationTest {
 	public void setup() {
 		this.context = new AnnotationConfigApplicationContext();
 
-		EnvironmentTestUtils.addEnvironment(this.context,
-			"com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-			"com.rollbar.environment=test",
-			"com.rollbar.codeVersion=23218add");
+		TestPropertyValues.of("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+				"com.rollbar.environment=test",
+				"com.rollbar.codeVersion=23218add").applyTo(this.context);
 
 		this.context.register(RollbarAutoConfiguration.class);
 		this.context.refresh();
