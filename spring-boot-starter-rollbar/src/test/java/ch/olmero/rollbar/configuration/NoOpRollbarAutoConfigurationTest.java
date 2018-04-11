@@ -9,11 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoopRollbarAutoConfigurationTest {
+public class NoOpRollbarAutoConfigurationTest {
 	@Test
 	public void disableRollbar() {
 		try (ConfigurableApplicationContext ctxt = init("com.rollbar.enabled:false")) {
-			assertThat(ctxt.getBean(RollbarNotificationService.class)).isInstanceOf(NoopRollbarAutoConfiguration.NoopRollbarNotificationService.class);
+			assertThat(ctxt.getBean(RollbarNotificationService.class)).isInstanceOf(RollbarAutoConfiguration.NoOpConfiguration.NoOpRollbarNotificationService.class);
 		}
 	}
 
