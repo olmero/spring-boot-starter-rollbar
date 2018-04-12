@@ -10,30 +10,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.event.ApplicationPreparedEvent;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.*;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.core.ResolvableType;
 import org.springframework.mock.env.MockEnvironment;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LogbackLoggingApplicationListenerTest {
-	private LogbackLoggingApplicationListener listener = new LogbackLoggingApplicationListener();
+public class LogbackLoggingConfigurerTest {
 
-	@Mock
-	private ConfigurableApplicationContext applicationContext;
+	private LogbackLoggingConfigurer logbackLoggingConfigurer;
 	@Mock
 	private RollbarNotificationService rollbarNotificationService;
-
 	private MockEnvironment environment;
 
 	private Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -41,9 +30,7 @@ public class LogbackLoggingApplicationListenerTest {
 	@Before
 	public void setup() {
 		this.environment = new MockEnvironment();
-
-		when(this.applicationContext.getBean(RollbarNotificationService.class)).thenReturn(this.rollbarNotificationService);
-		when(this.applicationContext.getEnvironment()).thenReturn(this.environment);
+		logbackLoggingConfigurer = new LogbackLoggingConfigurer(this.environment);
 	}
 
 	@After
@@ -52,19 +39,8 @@ public class LogbackLoggingApplicationListenerTest {
 	}
 
 	@Test
-	public void supportsSourceType() {
-		assertThat(this.listener.supportsSourceType(SpringApplication.class)).isTrue();
-		assertThat(this.listener.supportsSourceType(ApplicationContext.class)).isTrue();
-
-		assertThat(this.listener.supportsSourceType(null)).isFalse();
-		assertThat(this.listener.supportsSourceType(Object.class)).isFalse();
-		assertThat(this.listener.supportsSourceType(String.class)).isFalse();
-	}
-
-	@Test
 	public void rootLevelDefault() {
-		this.listener.onApplicationEvent(createEvent());
-
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 		rollbarAppender().doAppend(loggingEvent(Level.ERROR, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.ERROR);
 
@@ -75,7 +51,7 @@ public class LogbackLoggingApplicationListenerTest {
 	@Test
 	public void overrideRootLevel() {
 		this.environment.setProperty("com.rollbar.logging.level.root", "INFO");
-		this.listener.onApplicationEvent(createEvent());
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.INFO);
@@ -92,8 +68,8 @@ public class LogbackLoggingApplicationListenerTest {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "DEBUG");
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
-		this.listener.onApplicationEvent(createEvent());
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.INFO);
@@ -104,8 +80,8 @@ public class LogbackLoggingApplicationListenerTest {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "OFF");
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
-		this.listener.onApplicationEvent(createEvent());
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));
 		verify(this.rollbarNotificationService, never()).log("message", null, RollbarNotificationService.Level.INFO);
@@ -120,7 +96,4 @@ public class LogbackLoggingApplicationListenerTest {
 		return new LoggingEvent("", logger, level, message, null, null);
 	}
 
-	private ApplicationEvent createEvent() {
-		return new ContextRefreshedEvent(this.applicationContext);
-	}
 }
