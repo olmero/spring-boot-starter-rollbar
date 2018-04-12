@@ -1,50 +1,43 @@
 package ch.olmero.rollbar.configuration;
 
 import ch.olmero.rollbar.DefaultRollbarNotificationService;
-import ch.olmero.rollbar.RollbarNotificationService;
 import com.rollbar.notifier.Rollbar;
-import com.rollbar.notifier.config.*;
-import org.junit.*;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.rollbar.notifier.config.Config;
+import com.rollbar.notifier.config.ConfigBuilder;
+import com.rollbar.notifier.config.ConfigProvider;
+import org.junit.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RollbarAutoConfigurationTest {
-	private AnnotationConfigApplicationContext context;
 
-	@Before
-	public void setup() {
-		this.context = new AnnotationConfigApplicationContext();
-
-		TestPropertyValues.of("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-				"com.rollbar.environment=test",
-				"com.rollbar.codeVersion=23218add").applyTo(this.context);
-
-		this.context.register(RollbarAutoConfiguration.class);
-		this.context.refresh();
-	}
-
-	@After
-	public void after() {
-		this.context.close();
-	}
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoopRollbarAutoConfiguration.class))
+		.withPropertyValues("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+			"com.rollbar.environment=test",
+			"com.rollbar.codeVersion=23218add");
 
 	@Test
 	public void verifyConfiguration() {
-		Rollbar rollbar = this.context.getBean(Rollbar.class);
+	this.contextRunner
+			.run(context -> {
+				Rollbar rollbar = context.getBean(Rollbar.class);
 
-		MockConfigProvider configProvider = new MockConfigProvider();
-		rollbar.configure(configProvider);
+				MockConfigProvider configProvider = new MockConfigProvider();
+				rollbar.configure(configProvider);
 
-		assertThat(configProvider.config.accessToken()).isEqualTo("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
-		assertThat(configProvider.config.environment()).isEqualTo("test");
-		assertThat(configProvider.config.codeVersion()).isEqualTo("23218add");
+				assertThat(configProvider.config.accessToken()).isEqualTo("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+				assertThat(configProvider.config.environment()).isEqualTo("test");
+				assertThat(configProvider.config.codeVersion()).isEqualTo("23218add");
+			});
 	}
 
 	@Test
 	public void verifyNotificationService() {
-		assertThat(this.context.getBean(RollbarNotificationService.class)).isInstanceOf(DefaultRollbarNotificationService.class);
+		this.contextRunner
+			.run(context -> assertThat(context).hasSingleBean(DefaultRollbarNotificationService.class));
 	}
 
 	private class MockConfigProvider implements ConfigProvider {

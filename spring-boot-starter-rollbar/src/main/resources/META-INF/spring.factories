@@ -1,3 +1,4 @@
 # AutoConfiguration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-ch.olmero.rollbar.configuration.RollbarAutoConfiguration
+ch.olmero.rollbar.configuration.RollbarAutoConfiguration,\
+ch.olmero.rollbar.configuration.NoopRollbarAutoConfiguration

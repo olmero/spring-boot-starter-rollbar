@@ -1,29 +1,20 @@
 package ch.olmero.rollbar.configuration;
 
-import ch.olmero.rollbar.RollbarNotificationService;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoOpRollbarAutoConfigurationTest {
+public class NoopRollbarAutoConfigurationTest {
+
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoopRollbarAutoConfiguration.class));
+
 	@Test
 	public void disableRollbar() {
-		try (ConfigurableApplicationContext ctxt = init("com.rollbar.enabled:false")) {
-			assertThat(ctxt.getBean(RollbarNotificationService.class)).isInstanceOf(RollbarAutoConfiguration.NoOpConfiguration.NoOpRollbarNotificationService.class);
-		}
-	}
-
-	protected ConfigurableApplicationContext init(String... pairs) {
-		return new SpringApplicationBuilder().sources(Config.class)
-			.properties(pairs).run();
-	}
-
-	@Configuration
-	@EnableAutoConfiguration
-	protected static class Config {
+		this.contextRunner
+			.withPropertyValues("com.rollbar.enabled:false")
+			.run(context -> assertThat(context).hasSingleBean(NoopRollbarAutoConfiguration.NoopRollbarNotificationService.class));
 	}
 }

@@ -13,15 +13,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@RequiredArgsConstructor
 @Configuration
+@EnableConfigurationProperties(RollbarProperties.class)
+@ConditionalOnProperty(prefix = "com.rollbar", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class RollbarAutoConfiguration {
-
-	@RequiredArgsConstructor
-	@Configuration
-	@ConditionalOnProperty(prefix = "com.rollbar", name = "enabled", havingValue = "true", matchIfMissing = true)
-	@EnableConfigurationProperties(RollbarProperties.class)
-	static class RollbarConfiguration {
-		private final RollbarProperties rollbarProperties;
+	private final RollbarProperties rollbarProperties;
 
 		@Bean
 		public Rollbar rollbar() {
@@ -34,11 +31,12 @@ public class RollbarAutoConfiguration {
 			return Rollbar.init(config);
 		}
 
-		@Bean
-		public RollbarNotificationService notificationService() {
-			return new DefaultRollbarNotificationService(rollbar());
-		}
+	@Bean
+	@ConditionalOnMissingBean
+	public RollbarNotificationService notificationService() {
+		return new DefaultRollbarNotificationService(rollbar());
 	}
+}
 
 	@Configuration
 	@ConditionalOnMissingBean(RollbarNotificationService.class)
