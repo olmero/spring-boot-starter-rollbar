@@ -1,6 +1,6 @@
 package ch.olmero.rollbar.configuration;
 
-import ch.olmero.rollbar.AbstractRollbarNotificationService;
+import ch.olmero.rollbar.NoOpRollbarNotificationService;
 import ch.olmero.rollbar.RollbarNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -18,9 +18,4 @@ public class NoOpRollbarAutoConfiguration {
 		return new NoOpRollbarNotificationService();
 	}
 
-	static class NoOpRollbarNotificationService extends AbstractRollbarNotificationService {
-		@Override
-		public void log(String message, Throwable throwable, Level level) {
-		}
-	}
 }

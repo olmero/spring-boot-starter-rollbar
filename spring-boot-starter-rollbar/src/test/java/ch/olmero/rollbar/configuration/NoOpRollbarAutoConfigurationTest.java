@@ -1,5 +1,6 @@
 package ch.olmero.rollbar.configuration;
 
+import ch.olmero.rollbar.NoOpRollbarNotificationService;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -15,6 +16,6 @@ public class NoOpRollbarAutoConfigurationTest {
 	public void disableRollbar() {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.enabled:false")
-			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarAutoConfiguration.NoOpRollbarNotificationService.class));
+			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.NoOpRollbarNotificationService.class));
 	}
 }
