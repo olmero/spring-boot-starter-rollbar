@@ -16,6 +16,6 @@ public class NoOpRollbarAutoConfigurationTest {
 	public void disableRollbar() {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.enabled:false")
-			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.NoOpRollbarNotificationService.class));
+			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.class));
 	}
 }
