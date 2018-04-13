@@ -1,3 +1,3 @@
-# Application Listeners
-org.springframework.context.ApplicationListener=\
-ch.olmero.rollbar.logback.LogbackLoggingApplicationListener
+# AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+ch.olmero.rollbar.logback.LogbackRollbarAutoConfiguration
