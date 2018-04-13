@@ -4,29 +4,25 @@ import ch.olmero.rollbar.RollbarNotificationService;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.boolex.EventEvaluatorBase;
 import ch.qos.logback.core.filter.EvaluatorFilter;
 import ch.qos.logback.core.spi.FilterReply;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.context.logging.LoggingApplicationListener;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.GenericApplicationListener;
-import org.springframework.core.ResolvableType;
+import org.springframework.core.env.Environment;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class LogbackLoggingApplicationListener implements GenericApplicationListener {
-	private static Class<?>[] SOURCE_TYPES = { SpringApplication.class, ApplicationContext.class };
+public class LogbackLoggingConfigurer {
+
+	private final Environment environment;
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
@@ -41,38 +37,14 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 		LEVELS.map(LogLevel.OFF, Level.OFF);
 	}
 
-	@Override
-	public boolean supportsEventType(ResolvableType resolvableType) {
-		return ContextRefreshedEvent.class.isAssignableFrom(resolvableType.getRawClass());
-	}
-
-	@Override
-	public boolean supportsSourceType(Class<?> sourceType) {
-		return sourceType != null
-			&& Arrays.stream(SOURCE_TYPES).anyMatch(a -> a.isAssignableFrom(sourceType));
-	}
-
-	@Override
-	public void onApplicationEvent(ApplicationEvent event) {
-		if (event instanceof ContextRefreshedEvent) {
-			onApplicationPreparedEvent((ContextRefreshedEvent)event);
-		}
-	}
-
-	@Override
-	public int getOrder() {
-		// Should run right after LoggingApplicationListener
-		return LoggingApplicationListener.DEFAULT_ORDER + 1;
-	}
-
-	private void onApplicationPreparedEvent(ContextRefreshedEvent event) {
+	public void configure(RollbarNotificationService rollbarNotificationService) {
 		Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 		// default is com.rollbar.logging.level.root=ERROR
-		Binder binder = Binder.get(event.getApplicationContext().getEnvironment());
+		Binder binder = Binder.get(this.environment);
 
 		Map<String, String> levels = binder.bind("com.rollbar.logging.level",
-				Bindable.mapOf(String.class, String.class)).orElseGet(Collections::emptyMap);
+			Bindable.mapOf(String.class, String.class)).orElseGet(Collections::emptyMap);
 
 		Map<String, Level> logLevels = levels.entrySet().stream()
 			.map(e -> new HashMap.SimpleEntry<>(e.getKey(), coerceLogLevel(e.getValue())))
@@ -87,15 +59,24 @@ public class LogbackLoggingApplicationListener implements GenericApplicationList
 		eventEvaluatorFilter.setEvaluator(classExclusionEvaluator);
 		eventEvaluatorFilter.start();
 
-		RollbarNotificationService rollbarNotificationService = event.getApplicationContext().getBean(RollbarNotificationService.class);
-
 		LogbackRollbarAppender logbackRollbarAppender = new LogbackRollbarAppender(rollbarNotificationService);
 		logbackRollbarAppender.addFilter(eventEvaluatorFilter);
 		logbackRollbarAppender.setName(LogbackRollbarAppender.NAME);
 		logbackRollbarAppender.setContext(rootLogger.getLoggerContext());
 		logbackRollbarAppender.start();
 
-		rootLogger.addAppender(logbackRollbarAppender);
+		addAppender(rootLogger, logbackRollbarAppender);
+	}
+
+	private void addAppender(Logger logger, LogbackRollbarAppender logbackRollbarAppender) {
+		Appender<ILoggingEvent> appender = logger.getAppender(LogbackRollbarAppender.NAME);
+
+		if (appender != null) {
+			appender.stop();
+			logger.detachAppender(appender);
+		}
+
+		logger.addAppender(logbackRollbarAppender);
 	}
 
 	private Level coerceLogLevel(String level) {
