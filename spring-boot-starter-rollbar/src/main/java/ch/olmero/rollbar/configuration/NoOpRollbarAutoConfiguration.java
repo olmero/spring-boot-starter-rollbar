@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter(RollbarAutoConfiguration.class)
 @RequiredArgsConstructor
 @Configuration
-public class NoopRollbarAutoConfiguration {
+public class NoOpRollbarAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RollbarNotificationService notificationService() {

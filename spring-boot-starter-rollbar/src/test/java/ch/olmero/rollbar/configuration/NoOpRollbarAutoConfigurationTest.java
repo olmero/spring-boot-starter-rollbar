@@ -6,15 +6,15 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NoopRollbarAutoConfigurationTest {
+public class NoOpRollbarAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoopRollbarAutoConfiguration.class));
+		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoOpRollbarAutoConfiguration.class));
 
 	@Test
 	public void disableRollbar() {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.enabled:false")
-			.run(context -> assertThat(context).hasSingleBean(NoopRollbarAutoConfiguration.NoopRollbarNotificationService.class));
+			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarAutoConfiguration.NoopRollbarNotificationService.class));
 	}
 }

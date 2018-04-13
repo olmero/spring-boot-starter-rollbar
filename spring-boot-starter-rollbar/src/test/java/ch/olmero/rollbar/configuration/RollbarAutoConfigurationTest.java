@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RollbarAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoopRollbarAutoConfiguration.class))
+		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoOpRollbarAutoConfiguration.class))
 		.withPropertyValues("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
 			"com.rollbar.environment=test",
 			"com.rollbar.codeVersion=23218add");
