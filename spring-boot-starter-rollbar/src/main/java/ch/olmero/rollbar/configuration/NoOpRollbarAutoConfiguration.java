@@ -15,10 +15,10 @@ public class NoOpRollbarAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RollbarNotificationService notificationService() {
-		return new NoopRollbarNotificationService();
+		return new NoOpRollbarNotificationService();
 	}
 
-	static class NoopRollbarNotificationService extends AbstractRollbarNotificationService {
+	static class NoOpRollbarNotificationService extends AbstractRollbarNotificationService {
 		@Override
 		public void log(String message, Throwable throwable, Level level) {
 		}
