@@ -22,7 +22,7 @@
 
 	<scm>
 		<developerConnection>scm:git:git@git.olmero.ch:olmero/spring-boot-starter-rollbar.git</developerConnection>
-		<tag>v1.1.2.RELEASE</tag>
+		<tag>v1.1.3.BUILD-SNAPSHOT</tag>
 	</scm>
 
 	<distributionManagement>
