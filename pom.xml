@@ -96,6 +96,12 @@
 
 	<build>
 		<plugins>
+            <!-- Surefire plugin fails with newer versions of the plugin on Docker and Alpine http://raehal.me/maven-surefire-plugin-on-Docker/ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
