@@ -1,16 +1,16 @@
 # Spring Boot Starter Rollbar
 
 ## Enabling Rollbar
-The simplest way to enable rollbar is to add a dependency to 
+The simplest way to enable rollbar is to add a dependency to
 `spring-boot-starter-rollbar`.
- 
+
 #### Maven
 To add rollbar to a Maven-based project, add the following '`Starter`' dependency:
 
 ```xml
 <dependencies>
     <dependency>
-        <groupId>org.springframework.boot</groupId>
+        <groupId>ch.olmero</groupId>
         <artifactId>spring-boot-starter-rollbar</artifactId>
         <version>2.0.1.RELEASE</version>
     </dependency>
@@ -30,11 +30,11 @@ compile 'ch.olmero.:spring-boot-starter-rollbar:2.0.1.RELEASE'
 ## Configuration
 The following properties are registered and can (must) be configured accordingly.
 
-`com.rollbar.access-token` 
+`com.rollbar.access-token`
 
 The access token to use. This value **must** be configured.
 
-`com.rollbar.environment` 
+`com.rollbar.environment`
 
 Represents the current environment (e.g.: production, debug, test). This value **must** be configured.
 
