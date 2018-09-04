@@ -1,6 +1,6 @@
-# Spring Boot Starter Rollbar
+# Rollbar Logback Spring Boot Starter
 
-## Enabling Rollbar
+## Enabling Rollbar for Logback
 The simplest way to enable rollbar through logback is to add a dependency to
 `spring-boot-starter-rollbar-logback`.
 
@@ -11,19 +11,19 @@ To add rollbar for logback to a Maven-based project, add the following '`Starter
 <dependencies>
     <dependency>
         <groupId>ch.olmero</groupId>
-        <artifactId>spring-boot-starter-rollbar-logback</artifactId>
+        <artifactId>rollbar-logback-spring-boot-starter</artifactId>
         <version>2.0.1.RELEASE</version>
     </dependency>
 </dependencies>
 ```
 
 #### Gradle
-To add rollbar to a Gradle-based project, add the following '`Starter`' dependency:
+To add rollbar for logback to a Gradle-based project, add the following '`Starter`' dependency:
 
 ```groovy
 apply plugin: 'maven'
 
-compile 'ch.olmero.:spring-boot-starter-rollbar-logback:2.0.1.RELEASE'
+compile 'ch.olmero:rollbar-logback-spring-boot-starter:2.0.1.RELEASE'
 ```
 
 
@@ -41,4 +41,4 @@ changed by setting the level for `root` e.g.
 
 In this case everything that is logged as `WARN` or `ERROR` will be forwarded to Rollbar.
 
-As this module has a dependency to `spring-boot-starter-rollbar`, the rollbar configuration options can also be applied.
+As this module has a dependency to `rollbar-spring-boot-starter`, the rollbar configuration options can also be applied.
