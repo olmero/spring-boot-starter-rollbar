@@ -3,29 +3,24 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>spring-boot-starter-rollbar-project</artifactId>
+		<artifactId>rollbar-spring-boot-starter-project</artifactId>
 		<groupId>ch.olmero</groupId>
 		<version>2.0.2.BUILD-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
-	<artifactId>spring-boot-starter-rollbar</artifactId>
+	<artifactId>rollbar-logback-spring-boot-starter</artifactId>
 	<version>2.0.2.BUILD-SNAPSHOT</version>
-
-	<properties>
-		<rollbar.version>1.0.0</rollbar.version>
-	</properties>
 
 	<dependencies>
 		<!-- Compile -->
 		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
+			<groupId>ch.olmero</groupId>
+			<artifactId>rollbar-spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.rollbar</groupId>
-			<artifactId>rollbar-java</artifactId>
-			<version>${rollbar.version}</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
 		</dependency>
 
 		<!-- Optional -->

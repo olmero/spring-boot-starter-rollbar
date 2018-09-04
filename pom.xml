@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>ch.olmero</groupId>
-	<artifactId>spring-boot-starter-rollbar-project</artifactId>
+	<artifactId>rollbar-spring-boot-starter-project</artifactId>
 	<version>2.0.2.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -28,8 +28,8 @@
 	</properties>
 
 	<scm>
-		<developerConnection>scm:git:git@github.com:olmero/spring-boot-starter-rollbar.git</developerConnection>
-        <url>https://github.com/olmero/spring-boot-starter-rollbar/tree/master</url>
+		<developerConnection>scm:git:git@github.com:olmero/rollbar-spring-boot-starter.git</developerConnection>
+        <url>https://github.com/olmero/rollbar-spring-boot-starter/tree/master</url>
 	  <tag>HEAD</tag>
   </scm>
 
@@ -45,21 +45,21 @@
 	</distributionManagement>
 
 	<modules>
-		<module>spring-boot-starter-rollbar</module>
-		<module>spring-boot-starter-rollbar-logback</module>
+		<module>rollbar-spring-boot-starter</module>
+		<module>rollbar-logback-spring-boot-starter</module>
 	</modules>
 
 	<dependencyManagement>
-		<!-- Spring Boot Starter Rollbar -->
+		<!-- Rollbar Spring Boot Starter -->
 		<dependencies>
 			<dependency>
 				<groupId>ch.olmero</groupId>
-				<artifactId>spring-boot-starter-rollbar</artifactId>
+				<artifactId>rollbar-spring-boot-starter</artifactId>
 				<version>2.0.2.BUILD-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.olmero</groupId>
-				<artifactId>spring-boot-starter-rollbar-logback</artifactId>
+				<artifactId>rollbar-logback-spring-boot-starter</artifactId>
 				<version>2.0.2.BUILD-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
