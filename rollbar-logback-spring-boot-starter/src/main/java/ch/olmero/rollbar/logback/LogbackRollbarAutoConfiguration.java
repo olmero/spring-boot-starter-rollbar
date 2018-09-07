@@ -8,10 +8,9 @@ import org.springframework.core.env.Environment;
 @Configuration
 @RequiredArgsConstructor
 public class LogbackRollbarAutoConfiguration {
-	private final Environment environment;
 
 	@Bean
-	public LogbackLoggingBeanPostProcessor logbackLoggingAbstractBeanFactory() {
-		return new LogbackLoggingBeanPostProcessor(new LogbackLoggingConfigurer(environment));
+	public static LogbackLoggingBeanPostProcessor logbackLoggingAbstractBeanFactory() {
+		return new LogbackLoggingBeanPostProcessor(new LogbackLoggingConfigurer());
 	}
 }

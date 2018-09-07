@@ -16,13 +16,14 @@ import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.core.env.Environment;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 public class LogbackLoggingConfigurer {
-
-	private final Environment environment;
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
@@ -37,11 +38,11 @@ public class LogbackLoggingConfigurer {
 		LEVELS.map(LogLevel.OFF, Level.OFF);
 	}
 
-	public void configure(RollbarNotificationService rollbarNotificationService) {
+	public void configure(RollbarNotificationService rollbarNotificationService, Environment environment) {
 		Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 		// default is com.rollbar.logging.level.root=ERROR
-		Binder binder = Binder.get(this.environment);
+		Binder binder = Binder.get(environment);
 
 		Map<String, String> levels = binder.bind("com.rollbar.logging.level",
 			Bindable.mapOf(String.class, String.class)).orElseGet(Collections::emptyMap);
