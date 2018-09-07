@@ -18,5 +18,4 @@ public class LogbackLoggingBeanPostProcessor implements BeanPostProcessor {
 
 		return bean;
 	}
-
 }
