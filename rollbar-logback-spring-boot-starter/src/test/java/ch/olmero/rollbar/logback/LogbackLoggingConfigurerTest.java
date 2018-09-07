@@ -30,7 +30,7 @@ public class LogbackLoggingConfigurerTest {
 	@Before
 	public void setup() {
 		this.environment = new MockEnvironment();
-		logbackLoggingConfigurer = new LogbackLoggingConfigurer();
+		logbackLoggingConfigurer = new LogbackLoggingConfigurer(this.environment);
 	}
 
 	@After
@@ -40,7 +40,7 @@ public class LogbackLoggingConfigurerTest {
 
 	@Test
 	public void rootLevelDefault() {
-		logbackLoggingConfigurer.configure(rollbarNotificationService, environment);
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 		rollbarAppender().doAppend(loggingEvent(Level.ERROR, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.ERROR);
 
@@ -51,7 +51,7 @@ public class LogbackLoggingConfigurerTest {
 	@Test
 	public void overrideRootLevel() {
 		this.environment.setProperty("com.rollbar.logging.level.root", "INFO");
-		logbackLoggingConfigurer.configure(rollbarNotificationService, environment);
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.INFO);
@@ -68,7 +68,7 @@ public class LogbackLoggingConfigurerTest {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "DEBUG");
-		logbackLoggingConfigurer.configure(rollbarNotificationService, environment);
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));
@@ -80,7 +80,7 @@ public class LogbackLoggingConfigurerTest {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "OFF");
-		logbackLoggingConfigurer.configure(rollbarNotificationService, environment);
+		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
 
 		rollbarAppender().doAppend(loggingEvent(Level.INFO, "message"));

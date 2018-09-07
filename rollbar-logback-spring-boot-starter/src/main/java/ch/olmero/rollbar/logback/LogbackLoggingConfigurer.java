@@ -23,7 +23,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class LogbackLoggingConfigurer {
+
+	private final Environment environment;
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
@@ -38,7 +41,7 @@ public class LogbackLoggingConfigurer {
 		LEVELS.map(LogLevel.OFF, Level.OFF);
 	}
 
-	public void configure(RollbarNotificationService rollbarNotificationService, Environment environment) {
+	public void configure(RollbarNotificationService rollbarNotificationService) {
 		Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
 		// default is com.rollbar.logging.level.root=ERROR
