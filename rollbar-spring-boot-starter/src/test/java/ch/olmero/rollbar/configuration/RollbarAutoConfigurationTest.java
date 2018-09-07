@@ -8,21 +8,20 @@ import com.rollbar.notifier.config.ConfigBuilder;
 import com.rollbar.notifier.config.ConfigProvider;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RollbarAutoConfigurationTest {
-
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class))
 		.withPropertyValues("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-			"com.rollbar.environment=test",
-			"com.rollbar.codeVersion=23218add");
+			"com.rollbar.environment=test");
 
 	@Test
 	public void verifyConfiguration() {
-	this.contextRunner
+		this.contextRunner
 			.run(context -> {
 				Rollbar rollbar = context.getBean(Rollbar.class);
 
@@ -31,7 +30,6 @@ public class RollbarAutoConfigurationTest {
 
 				assertThat(configProvider.config.accessToken()).isEqualTo("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
 				assertThat(configProvider.config.environment()).isEqualTo("test");
-				assertThat(configProvider.config.codeVersion()).isEqualTo("23218add");
 			});
 	}
 
@@ -55,5 +53,25 @@ public class RollbarAutoConfigurationTest {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.enabled:false")
 			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.class));
+	}
+
+	@Test
+	public void useCodeVersion() {
+		this.contextRunner
+			.withPropertyValues("com.rollbar.codeVersion=23218add")
+			.run(context -> {
+				Config rollbarConfig = context.getBean(Config.class);
+				assertThat(rollbarConfig.codeVersion()).isEqualTo("23218add");
+			});
+	}
+
+	@Test
+	public void useCommitIdFromProjectInfoAsCodeVersion() {
+		this.contextRunner
+			.withConfiguration(AutoConfigurations.of(ProjectInfoAutoConfiguration.class))
+			.run(context -> {
+					Config rollbarConfig = context.getBean(Config.class);
+					assertThat(rollbarConfig.codeVersion()).isEqualTo("2b99962a85ee6cb7d48f05a65a5d529398d3e8be");
+				});
 	}
 }
