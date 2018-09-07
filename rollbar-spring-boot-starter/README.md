@@ -1,4 +1,4 @@
-# Spring Boot Starter Rollbar
+# Rollbar Spring Boot Starter
 
 ## Enabling Rollbar
 The simplest way to enable rollbar is to add a dependency to
@@ -11,7 +11,7 @@ To add rollbar to a Maven-based project, add the following '`Starter`' dependenc
 <dependencies>
     <dependency>
         <groupId>ch.olmero</groupId>
-        <artifactId>spring-boot-starter-rollbar</artifactId>
+        <artifactId>rollbar-spring-boot-starter</artifactId>
         <version>2.0.1.RELEASE</version>
     </dependency>
 </dependencies>
@@ -23,7 +23,7 @@ To add rollbar to a Gradle-based project, add the following '`Starter`' dependen
 ```groovy
 apply plugin: 'maven'
 
-compile 'ch.olmero.:spring-boot-starter-rollbar:2.0.1.RELEASE'
+compile 'ch.olmero:rollbar-spring-boot-starter:2.0.1.RELEASE'
 ```
 
 
