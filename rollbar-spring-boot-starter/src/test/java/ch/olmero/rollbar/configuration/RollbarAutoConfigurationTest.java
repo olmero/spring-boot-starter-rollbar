@@ -1,6 +1,7 @@
 package ch.olmero.rollbar.configuration;
 
 import ch.olmero.rollbar.DefaultRollbarNotificationService;
+import ch.olmero.rollbar.NoOpRollbarNotificationService;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RollbarAutoConfigurationTest {
 
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class, NoOpRollbarAutoConfiguration.class))
+		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class))
 		.withPropertyValues("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
 			"com.rollbar.environment=test",
 			"com.rollbar.codeVersion=23218add");
@@ -47,5 +48,12 @@ public class RollbarAutoConfigurationTest {
 		public Config provide(ConfigBuilder builder) {
 			return this.config = builder.build();
 		}
+	}
+
+	@Test
+	public void disableRollbar() {
+		this.contextRunner
+			.withPropertyValues("com.rollbar.enabled:false")
+			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.class));
 	}
 }
