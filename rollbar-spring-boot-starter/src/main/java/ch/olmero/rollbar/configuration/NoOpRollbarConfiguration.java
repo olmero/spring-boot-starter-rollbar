@@ -8,10 +8,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@AutoConfigureAfter(RollbarAutoConfiguration.class)
-@RequiredArgsConstructor
 @Configuration
-public class NoOpRollbarAutoConfiguration {
+public class NoOpRollbarConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public RollbarNotificationService notificationService() {
