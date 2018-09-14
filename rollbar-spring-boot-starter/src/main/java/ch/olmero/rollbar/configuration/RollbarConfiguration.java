@@ -27,9 +27,8 @@ public class RollbarConfiguration {
 	public Config rollbarConfiguration() {
 		ConfigBuilder configBuilder = ConfigBuilder
 			.withAccessToken(this.rollbarProperties.getAccessToken())
+			.codeVersion(determineCodeVersion())
 			.environment(this.rollbarProperties.getEnvironment());
-
-		setCodeVersion(configBuilder, this.gitProperties);
 
 		return configBuilder.build();
 	}
@@ -44,11 +43,16 @@ public class RollbarConfiguration {
 		return new DefaultRollbarNotificationService(rollbar());
 	}
 
-	private void setCodeVersion(ConfigBuilder configBuilder, ObjectProvider<GitProperties> gitProperties) {
+	private String determineCodeVersion() {
 		if (this.rollbarProperties.getCodeVersion() == null) {
-			gitProperties.ifAvailable(properties -> configBuilder.codeVersion(properties.getCommitId()));
+			GitProperties gitPropertiesIfAvailable = gitProperties.getIfAvailable();
+			if (gitPropertiesIfAvailable != null) {
+				return gitPropertiesIfAvailable.getCommitId();
+			} else {
+				return null;
+			}
 		} else {
-			configBuilder.codeVersion(this.rollbarProperties.getCodeVersion());
+			return this.rollbarProperties.getCodeVersion();
 		}
 	}
 }
