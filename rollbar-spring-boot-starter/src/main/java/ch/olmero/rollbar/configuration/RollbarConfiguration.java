@@ -48,11 +48,8 @@ public class RollbarConfiguration {
 			GitProperties gitPropertiesIfAvailable = gitProperties.getIfAvailable();
 			if (gitPropertiesIfAvailable != null) {
 				return gitPropertiesIfAvailable.getCommitId();
-			} else {
-				return null;
 			}
-		} else {
-			return this.rollbarProperties.getCodeVersion();
 		}
+		return this.rollbarProperties.getCodeVersion();
 	}
 }
