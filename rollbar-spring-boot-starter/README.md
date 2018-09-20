@@ -12,7 +12,7 @@ To add rollbar to a Maven-based project, add the following '`Starter`' dependenc
     <dependency>
         <groupId>ch.olmero</groupId>
         <artifactId>rollbar-spring-boot-starter</artifactId>
-        <version>2.0.3.RELEASE</version>
+        <version>2.0.4.RELEASE</version>
     </dependency>
 </dependencies>
 ```
@@ -23,7 +23,7 @@ To add rollbar to a Gradle-based project, add the following '`Starter`' dependen
 ```groovy
 apply plugin: 'maven'
 
-compile 'ch.olmero:rollbar-spring-boot-starter:2.0.3.RELEASE'
+compile 'ch.olmero:rollbar-spring-boot-starter:2.0.4.RELEASE'
 ```
 
 

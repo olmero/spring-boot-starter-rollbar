@@ -12,7 +12,7 @@ To add rollbar for logback to a Maven-based project, add the following '`Starter
     <dependency>
         <groupId>ch.olmero</groupId>
         <artifactId>rollbar-logback-spring-boot-starter</artifactId>
-        <version>2.0.3.RELEASE</version>
+        <version>2.0.4.RELEASE</version>
     </dependency>
 </dependencies>
 ```
@@ -23,7 +23,7 @@ To add rollbar for logback to a Gradle-based project, add the following '`Starte
 ```groovy
 apply plugin: 'maven'
 
-compile 'ch.olmero:rollbar-logback-spring-boot-starter:2.0.3.RELEASE'
+compile 'ch.olmero:rollbar-logback-spring-boot-starter:2.0.4.RELEASE'
 ```
 
 
