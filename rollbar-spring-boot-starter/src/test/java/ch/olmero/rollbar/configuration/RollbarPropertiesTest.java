@@ -4,11 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Throwables;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.FieldError;
 
 import java.util.List;
@@ -44,17 +44,8 @@ public class RollbarPropertiesTest {
 		}
 	}
 
-	@Test
-	public void useCommitIdAsCodeVersion() {
-		try (AnnotationConfigApplicationContext context = createContext("com.rollbar.accessToken:abc", "com.rollbar.environment:test")) {
-			RollbarProperties rollbarProperties = context.getBean(RollbarProperties.class);
-			assertThat(rollbarProperties.getCodeVersion()).isEqualTo("2b99962a85ee6cb7d48f05a65a5d529398d3e8be");
-		}
-	}
-
 	private AnnotationConfigApplicationContext createContext(String... pairs) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
 
 		TestPropertyValues.of(pairs).applyTo(context);
 
@@ -67,7 +58,6 @@ public class RollbarPropertiesTest {
 	@RequiredArgsConstructor
 	@Configuration
 	@EnableConfigurationProperties(RollbarProperties.class)
-	@Import(ProjectInfoAutoConfiguration.class)
 	public static class RollbarPropertiesConfiguration {
 		private final RollbarProperties rollbarProperties;
 	}
