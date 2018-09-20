@@ -5,20 +5,20 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.env.MockEnvironment;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
-public class LogbackLoggingConfigurerTest {
+@ExtendWith(MockitoExtension.class)
+class LogbackLoggingConfigurerTest {
 
 	private LogbackLoggingConfigurer logbackLoggingConfigurer;
 	@Mock
@@ -27,19 +27,19 @@ public class LogbackLoggingConfigurerTest {
 
 	private Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		this.environment = new MockEnvironment();
 		logbackLoggingConfigurer = new LogbackLoggingConfigurer(this.environment);
 	}
 
-	@After
-	public void rest() {
-		((Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).detachAppender(LogbackRollbarAppender.NAME);
+	@AfterEach
+	void rest() {
+		((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).detachAppender(LogbackRollbarAppender.NAME);
 	}
 
 	@Test
-	public void rootLevelDefault() {
+	void rootLevelDefault() {
 		logbackLoggingConfigurer.configure(rollbarNotificationService);
 		rollbarAppender().doAppend(loggingEvent(Level.ERROR, "message"));
 		verify(this.rollbarNotificationService).log("message", null, RollbarNotificationService.Level.ERROR);
@@ -49,7 +49,7 @@ public class LogbackLoggingConfigurerTest {
 	}
 
 	@Test
-	public void overrideRootLevel() {
+	void overrideRootLevel() {
 		this.environment.setProperty("com.rollbar.logging.level.root", "INFO");
 		logbackLoggingConfigurer.configure(rollbarNotificationService);
 
@@ -64,7 +64,7 @@ public class LogbackLoggingConfigurerTest {
 	}
 
 	@Test
-	public void additionalLevelDefinitionIsEvaluatedHigherThanRoot() {
+	void additionalLevelDefinitionIsEvaluatedHigherThanRoot() {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "DEBUG");
@@ -76,7 +76,7 @@ public class LogbackLoggingConfigurerTest {
 	}
 
 	@Test
-	public void additionalLevelDefinitionIsOFF() {
+	void additionalLevelDefinitionIsOFF() {
 		this.environment
 			.withProperty("com.rollbar.logging.level.root", "WARN")
 			.withProperty("com.rollbar.logging.level.ch.olmero.rollbar.logback", "OFF");
@@ -88,11 +88,11 @@ public class LogbackLoggingConfigurerTest {
 	}
 
 	private LogbackRollbarAppender rollbarAppender() {
-		return (LogbackRollbarAppender)this.rootLogger.getAppender(LogbackRollbarAppender.NAME);
+		return (LogbackRollbarAppender) this.rootLogger.getAppender(LogbackRollbarAppender.NAME);
 	}
 
 	private ILoggingEvent loggingEvent(Level level, String message) {
-		Logger logger = (Logger)LoggerFactory.getLogger(getClass());
+		Logger logger = (Logger) LoggerFactory.getLogger(getClass());
 		return new LoggingEvent("", logger, level, message, null, null);
 	}
 

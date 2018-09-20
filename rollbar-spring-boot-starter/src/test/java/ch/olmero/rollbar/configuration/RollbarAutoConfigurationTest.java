@@ -6,21 +6,21 @@ import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
 import com.rollbar.notifier.config.ConfigProvider;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RollbarAutoConfigurationTest {
+class RollbarAutoConfigurationTest {
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 		.withConfiguration(AutoConfigurations.of(RollbarAutoConfiguration.class))
 		.withPropertyValues("com.rollbar.accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
 			"com.rollbar.environment=test");
 
 	@Test
-	public void verifyConfiguration() {
+	void verifyConfiguration() {
 		this.contextRunner
 			.run(context -> {
 				Rollbar rollbar = context.getBean(Rollbar.class);
@@ -34,7 +34,7 @@ public class RollbarAutoConfigurationTest {
 	}
 
 	@Test
-	public void verifyNotificationService() {
+	void verifyNotificationService() {
 		this.contextRunner
 			.run(context -> assertThat(context).hasSingleBean(DefaultRollbarNotificationService.class));
 	}
@@ -49,14 +49,14 @@ public class RollbarAutoConfigurationTest {
 	}
 
 	@Test
-	public void disableRollbar() {
+	void disableRollbar() {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.enabled:false")
 			.run(context -> assertThat(context).hasSingleBean(NoOpRollbarNotificationService.class));
 	}
 
 	@Test
-	public void useCodeVersion() {
+	void useCodeVersion() {
 		this.contextRunner
 			.withPropertyValues("com.rollbar.codeVersion=23218add")
 			.run(context -> {
@@ -66,7 +66,7 @@ public class RollbarAutoConfigurationTest {
 	}
 
 	@Test
-	public void useCommitIdFromProjectInfoAsCodeVersion() {
+	void useCommitIdFromProjectInfoAsCodeVersion() {
 		this.contextRunner
 			.withConfiguration(AutoConfigurations.of(ProjectInfoAutoConfiguration.class))
 			.run(context -> {

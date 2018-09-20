@@ -3,7 +3,7 @@ package ch.olmero.rollbar.configuration;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Throwables;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RollbarPropertiesTest {
 	@Test
-	public void missingRequiredProperties() {
+	void missingRequiredProperties() {
 		try (AnnotationConfigApplicationContext context = createContext()) {
 			Assertions.fail("Expected BindException to be thrown");
 		} catch (Exception e) {
@@ -39,7 +39,7 @@ public class RollbarPropertiesTest {
 	}
 
 	@Test
-	public void shouldBeValid() {
+	void shouldBeValid() {
 		try (AnnotationConfigApplicationContext context = createContext("com.rollbar.accessToken:abc", "com.rollbar.environment:test")) {
 		}
 	}

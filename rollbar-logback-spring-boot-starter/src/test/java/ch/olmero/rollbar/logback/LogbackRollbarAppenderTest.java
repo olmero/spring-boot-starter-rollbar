@@ -5,25 +5,25 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.LoggerFactory;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-@RunWith(MockitoJUnitRunner.class)
-public class LogbackRollbarAppenderTest {
+@ExtendWith(MockitoExtension.class)
+class LogbackRollbarAppenderTest {
 	@Mock
 	private RollbarNotificationService rollbarNotificationService;
 	@InjectMocks
 	private LogbackRollbarAppender rollbarAppender;
 
 	@Test
-	public void levelMapping() {
+	void levelMapping() {
 		this.rollbarAppender.append(loggingEvent(Level.ALL, "all"));
 		verify(this.rollbarNotificationService).log("all", null, null);
 
@@ -46,7 +46,7 @@ public class LogbackRollbarAppenderTest {
 	}
 
 	@Test
-	public void appendWithThrowable() {
+	void appendWithThrowable() {
 		Exception exception = new Exception("exception");
 		this.rollbarAppender.append(loggingEvent(Level.ALL, "all", exception));
 		verify(this.rollbarNotificationService).log("all", exception, null);

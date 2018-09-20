@@ -3,8 +3,8 @@ package ch.olmero.rollbar.logback;
 import ch.olmero.rollbar.RollbarNotificationService;
 import ch.olmero.rollbar.configuration.RollbarAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -14,16 +14,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @Slf4j
-public class LogbackRollbarAppenderIntegrationTest {
+class LogbackRollbarAppenderIntegrationTest {
 	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
-	@After
-	public void after() {
+	@AfterEach
+	void after() {
 		this.context.close();
 	}
 
 	@Test
-	public void overrideRootLevel() {
+	void overrideRootLevel() {
 		TestPropertyValues.of("com.rollbar.logging.level.root=INFO",
 				"com.rollbar.access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
 				"com.rollbar.environment=test").applyTo(this.context);
