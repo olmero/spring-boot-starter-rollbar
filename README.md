@@ -3,4 +3,4 @@
 # Spring Boot Starter Rollbar
 
 * [rollbar-spring-boot-starter](rollbar-spring-boot-starter/README.md)
-* [rollbar-logback-spring-boot-starter](rollbar-logback-spring-boot-starter]/README.md)
+* [rollbar-logback-spring-boot-starter](rollbar-logback-spring-boot-starter/README.md)
