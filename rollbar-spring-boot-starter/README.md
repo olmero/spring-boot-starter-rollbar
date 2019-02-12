@@ -42,6 +42,6 @@ Represents the current environment (e.g.: production, debug, test). This value *
 
 The currently running version of the code. This value is **optional**.
 
-`com.rollbar.enable`
+`com.rollbar.enabled`
 
 Wheter rollbar should be enabled (default) or disabled. When disabled, a `NoopRollbarNotificationService` will be provided. This value is **optional**
