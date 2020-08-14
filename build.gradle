@@ -5,12 +5,8 @@
 allprojects {
     group = 'ch.olmero'
     version = '2.1.0.BUILD-SNAPSHOT'
-
 }
-plugins {
-    id "maven-release"
 
-}
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
@@ -34,7 +30,7 @@ subprojects {
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
 
         compile group: 'org.apache.maven.plugins', name: 'maven-gpg-plugin', version: '1.6'
-
+        compile 'org.apache.maven.plugins:maven-release-plugin:3.0.0-M1'
     }
 
     sourceCompatibility = '14'
