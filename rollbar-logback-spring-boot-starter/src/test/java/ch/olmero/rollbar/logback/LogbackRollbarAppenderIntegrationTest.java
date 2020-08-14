@@ -3,8 +3,8 @@ package ch.olmero.rollbar.logback;
 import ch.olmero.rollbar.RollbarNotificationService;
 import ch.olmero.rollbar.configuration.RollbarAutoConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 public class LogbackRollbarAppenderIntegrationTest {
 	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
-	@After
+	@AfterEach
 	public void after() {
 		this.context.close();
 	}

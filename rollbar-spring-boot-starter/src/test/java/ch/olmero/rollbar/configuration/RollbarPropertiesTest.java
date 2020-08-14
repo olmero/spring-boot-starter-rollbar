@@ -3,7 +3,7 @@ package ch.olmero.rollbar.configuration;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Throwables;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.boot.test.util.TestPropertyValues;
