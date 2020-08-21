@@ -1,0 +1,57 @@
+name: Build Docker image
+
+on:
+  push:
+    branches:
+      - test
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Set timezone
+        run: sudo timedatectl set-timezone Europe/Zurich
+
+      - name: Build JAR
+        env:
+          GITHUB_ACTOR: ${{ secrets.OLMERO_GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.OLMERO_GITHUB_TOKEN }}
+        run: ./mvnw -B -U package --file pom.xml
+
+      - name: Build, tag and push Docker image to GCR
+        uses: olmero/build-tag-push-to-gcr-action@v1
+        with:
+          project_name: rollbar-spring-boot-starter
+          jar_file: target/rollbar-logback-spring-boot-starter-2.1.0.BUILD-SNAPSHOT.jar
+        env:
+          GCLOUD_JSON_KEY: ${{ secrets.GCLOUD_JSON_KEY }}
+          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+
+      - name: Trigger OLMeRO Jenkins
+        run: curl "https://dev.olmero.ch/jenkins/job/Olmero%20AG/job/rollbar-spring-boot-starter/job/${GITHUB_REF#refs/heads/}/buildWithParameters?payload=${GITHUB_SHA}"
+
+      - name: Publish Build Status to Slack
+        if: failure()
+        uses: olmero/check-failure-slack-notification@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        with:
+          slack-channel: 'CSF26R9A8'

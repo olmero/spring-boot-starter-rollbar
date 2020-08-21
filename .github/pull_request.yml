@@ -1,0 +1,45 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+      - test
+      - master
+
+jobs:
+  build_pull_request:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Set timezone
+        run: sudo timedatectl set-timezone Europe/Zurich
+
+      - name: Run tests
+        env:
+          GITHUB_ACTOR: ${{ secrets.OLMERO_GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.OLMERO_GITHUB_TOKEN }}
+        run: ./mvnw -B -U test --file pom.xml
+
+      - name: Publish Build Status to Slack
+        if: failure()
+        uses: olmero/check-failure-slack-notification@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        with:
+          slack-channel: 'CSFC2LPT2'
