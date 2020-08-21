@@ -35,27 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.OLMERO_GITHUB_TOKEN }}
         run: ./mvnw -B -U package --file pom.xml
 
-      - name: Build, tag and push Docker image to GCR
-        uses: olmero/build-tag-push-to-gcr-action@v1
-        with:
-          project_name: rollbar-spring-boot-starter
-          jar_file: rollbar-spring-boot-starter/target/rollbar-spring-boot-starter-2.1.0.BUILD-SNAPSHOT.jar
-        env:
-          GCLOUD_JSON_KEY: ${{ secrets.GCLOUD_JSON_KEY }}
-          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
-
-      - name: Build, tag and push Docker image to GCR
-        uses: olmero/build-tag-push-to-gcr-action@v1
-        with:
-          project_name: rollbar-logback-spring-boot-starter
-          jar_file: rollbar-logback-spring-boot-starter/target/rollbar-logback-spring-boot-starter-2.1.0.BUILD-SNAPSHOT.jar
-        env:
-          GCLOUD_JSON_KEY: ${{ secrets.GCLOUD_JSON_KEY }}
-          GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
-
-      - name: Trigger OLMeRO Jenkins
-        run: curl "https://dev.olmero.ch/jenkins/job/Olmero%20AG/job/rollbar-spring-boot-starter/job/${GITHUB_REF#refs/heads/}/buildWithParameters?payload=${GITHUB_SHA}"
-
       - name: Publish Build Status to Slack
         if: failure()
         uses: olmero/check-failure-slack-notification@master
