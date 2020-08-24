@@ -5,20 +5,22 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LogbackRollbarAppenderTest {
+
 	@Mock
 	private RollbarNotificationService rollbarNotificationService;
+
 	@InjectMocks
 	private LogbackRollbarAppender rollbarAppender;
 

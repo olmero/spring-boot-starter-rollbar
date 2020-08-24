@@ -1,0 +1,60 @@
+name: Build Docker image
+
+on:
+  push:
+    branches:
+      - test
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Set timezone
+        run: sudo timedatectl set-timezone Europe/Zurich
+
+      - name: Build JAR
+        env:
+          GITHUB_ACTOR: ${{ secrets.OLMERO_GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.OLMERO_GITHUB_TOKEN }}
+        run: ./mvnw -B -U package --file pom.xml
+
+      - name: Publish Build Status to Slack
+        if: failure()
+        uses: olmero/check-failure-slack-notification@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        with:
+          slack-channel: 'CSF26R9A8'
+
+      - name: Bump version and push tag
+        uses: mathieudutour/github-tag-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          tag_prefix: ''
+
+      - name: Checkout latest code  # So that we get latest tag pushed in previous step
+        uses: actions/checkout@v1
+
+      - name: Publish to GitHub Packages
+        run: mvn -B deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

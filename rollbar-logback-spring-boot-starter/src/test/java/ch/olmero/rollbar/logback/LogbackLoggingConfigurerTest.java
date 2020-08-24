@@ -5,19 +5,19 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.env.MockEnvironment;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LogbackLoggingConfigurerTest {
 
 	private LogbackLoggingConfigurer logbackLoggingConfigurer;
@@ -27,13 +27,13 @@ public class LogbackLoggingConfigurerTest {
 
 	private Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		this.environment = new MockEnvironment();
 		logbackLoggingConfigurer = new LogbackLoggingConfigurer(this.environment);
 	}
 
-	@After
+	@AfterEach
 	public void rest() {
 		((Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).detachAppender(LogbackRollbarAppender.NAME);
 	}

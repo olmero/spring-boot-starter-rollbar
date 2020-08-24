@@ -1,8 +1,0 @@
-stages:
-- build
-
-build:
-  stage: build
-  image: openjdk:8-jdk-alpine
-  script:
-  - ./mvnw test
