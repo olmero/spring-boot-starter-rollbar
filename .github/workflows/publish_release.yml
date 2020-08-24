@@ -45,16 +45,16 @@ jobs:
           slack-channel: 'CSF26R9A8'
 
       - name: Bump version and push tag
-        uses: mathieudutour/github-tag-action@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: patch
-          tag_prefix: ''
+        uses: mathieudutour/github-tag-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          tag_prefix: ''
 
       - name: Checkout latest code  # So that we get latest tag pushed in previous step
-        uses: actions/checkout@v1
+        uses: actions/checkout@v1
 
       - name: Publish to GitHub Packages
         run: mvn -B deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
